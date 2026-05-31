@@ -1,0 +1,21 @@
+---
+description: Evidence-bound paper writing workflow for NeurIPS / EMNLP style submissions
+alwaysApply: true
+---
+
+# Paper Writer Template Rules
+
+1. Update the owning TODO file before substantive work.
+2. Keep one active owner for each role: scientist, engineer, reviewer, user/PI.
+3. The scientist owns paper claims and final prose.
+4. The engineer owns experiment execution and evidence provenance.
+5. The reviewer owns independent audits and must not read prior reviews before scoring a fresh batch.
+6. Main claims must be supported in the main paper.
+7. Limitations are concise scientific boundaries, not internal process confessions.
+8. Never promote diagnostic, failed, partial, or unreproducible runs into headline evidence.
+9. Every citation must be verified against a primary source and must support the sentence where it appears.
+10. Search paper-facing surfaces for assistant residue, local paths, task IDs, placeholders, and process vocabulary before submission.
+11. Rebuild PDFs before package checks; never certify a half-written build artifact.
+12. Verify supplement ZIPs by extraction and manifest check, not by path existence alone.
+13. Do not let final metadata drift from the PDF title and abstract.
+

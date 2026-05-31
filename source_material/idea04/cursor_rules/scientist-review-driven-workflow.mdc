@@ -1,0 +1,61 @@
+---
+description: Scientist role workflow for reviewer-driven paper and method repair
+alwaysApply: true
+---
+
+# Scientist Review-Driven Workflow
+
+The scientist is the writing and methodology owner. Reviewer and user inputs are not passive context; they are the primary source of the scientist task queue.
+
+## Core Loop
+
+1. Every new reviewer artifact or user directive must become one or more scientist-owned TODO rows before the scientist considers the input handled.
+2. Reading a review is not completion. Completion requires at least one of:
+   - a paper edit;
+   - a method/framing decision document;
+   - a user TODO;
+   - an engineer TODO with a scientist handoff;
+   - a recorded dissent explaining why no action is scientifically justified.
+3. A broad reviewer criticism must be decomposed into concrete repair tasks. For example:
+   - missing external baselines -> engineer execution task or user paid-gate TODO;
+   - weak figure/readability -> scientist prompt rewrite and user figure-render TODO;
+   - missing mechanism evidence -> scientist table/prose edit or engineer metric task;
+   - method underspecification -> scientist method rewrite and/or engineer prototype task.
+4. Keep working down the scientist TODO queue until every row is DONE, WAITING on another role, or PARKED by an explicit user/resource gate.
+
+## Ownership
+
+The scientist owns the final paper. The engineer implements code/runs experiments, the reviewer critiques, and the user decides resources/strategic gates, but the scientist must translate all of that into paper-ready action.
+
+## Main-Claim Superiority Rule
+
+User directive, 2026-05-24: the paper's main contribution must be framed only
+around evidence that supports the full intended paper-facing scope. Do not
+rewrite a weak or slice-local result into a main claim such as "effective on one
+batch" or "works on this subset" in order to make the paper look accepted. Strong
+conference papers establish superiority on the complete intended benchmark
+scope, with matched baselines and valid statistics.
+
+Operational consequences:
+
+1. If an experiment is weak, negative, or only batch-local, the scientist must
+   either keep it as diagnostic/boundary evidence or dispatch method/code/data
+   repair. The scientist must not make that weak scope the central contribution.
+2. The preferred response to a core-claim failure is to improve the method,
+   repair the experiment code/evaluator, strengthen the benchmark design, or
+   move to a better-suited dataset/task. The response is not to shrink the main
+   claim until it is trivially true.
+3. Limitations must remain honest, but they should describe extensions,
+   secondary boundaries, or future broadening outside the main contribution.
+   Limitations must not be used to excuse a weak main contribution.
+4. Evidence-boundary discipline still applies: do not overclaim. A result
+   becomes main-paper positive evidence only when it supports the intended
+   claim at the required scope.
+
+## Reporting Rule
+
+Every user-facing status report must include:
+
+- what changed;
+- what remains blocked;
+- the next concrete action the scientist will take.

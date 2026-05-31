@@ -1,0 +1,98 @@
+---
+description: Project-wide research engineering principles for English documentation, mature framework reuse, reproducible SOTA-oriented implementation, and visible memory/tool-use methodology
+alwaysApply: true
+---
+
+# Research Engineering Principles
+
+## 1. Documentation Language
+
+All new role-authored project documents must be written in English.
+
+This applies to:
+
+- `docs/**/*.md`
+- `artifacts/**/review.md`
+- `prompts/**/*.md`
+- root-level source-of-truth project documents when edited substantively
+- handoffs, logs, result summaries, runbooks, analysis notes, review artifacts, and TODO rows added after this rule
+
+Do not rewrite legacy Chinese or mojibake sections solely for language cleanup. When touching a legacy document, keep the edit English and avoid unnecessary churn.
+
+## 2. Build On Mature Open-Source Systems
+
+Before implementing a new agent-infrastructure component from scratch, inspect mature open-source references and record what is reused, adapted, or rejected.
+
+Preferred pattern:
+
+1. keep the EDO scientific core explicit and repository-controlled;
+2. reuse mature frameworks as references, adapters, baselines, or tooling layers;
+3. avoid black-box migration that hides the actual method;
+4. add controlled local abstractions only when they preserve reproducibility and ablation clarity.
+
+Relevant framework families include agent orchestration, memory, retrieval/RAG, tool protocols, evaluation harnesses, and observability.
+
+## 3. SOTA-Oriented Engineering Bar
+
+The ultimate research goal of this project is to reach SOTA across all relevant datasets and beat all listed baselines. Engineering work must be planned and executed in service of that goal. This is non-negotiable and must not be re-asked of the user every cycle (per user 2026-04-27 directive).
+
+User directive, 2026-05-24: negative, weak, or batch-local results must not be
+converted into the main paper contribution by narrowing the claim to the
+successful slice. If the current evidence does not support the intended
+headline, engineering should improve the method, repair code/evaluators,
+strengthen the experiment, or select a more appropriate dataset/task. Boundary
+results should be preserved honestly, but they are not substitutes for full
+intended-scope superiority.
+
+Concrete expectations:
+
+- the active dataset frontier includes HotpotQA, 2WikiMultiHopQA, MuSiQue, and any post-QA expansion (such as MARBLE) approved by the scientist;
+- the active baseline frontier includes the in-repo `single_agent` / `edo_stage2_chain`, MA-RAG, ReAgent, MAD, and any external/CrewAI/AutoGen-style baseline added by scientist or reviewer dispatch;
+- engineering decisions should prioritize the experiment matrix cell that best advances the headline claim (per `E-033` claim-first scheduling discipline);
+- when results land negative, the engineer must propose and execute the smallest additive change (memory, tool use, ablation flag, or orchestration patch) that has a credible chance of flipping the sign before re-running paper-grade rows.
+
+Every experiment-facing implementation must make these surfaces explicit:
+
+- dataset adapter and sample IDs;
+- baseline/method label;
+- backbone and provider;
+- config, seed, command, and run directory;
+- checkpoint/resume behavior;
+- metrics and paired statistical test plan where applicable;
+- known caveats and claims that must not enter the paper.
+
+## 4. Memory And Tool Use Are Method Components
+
+Memory, retrieval, MCP/tool access, and tool selection must be treated as visible method components, not hidden implementation tricks.
+
+Required expectations:
+
+- log memory writes and retrievals with source references;
+- log tool selection score components and tool-call outputs;
+- expose config flags for memory/tool ablations;
+- include fair controls such as no-memory, no-tools, all-tools, static-tools, and random-tools where feasible;
+- compare against budget-matched tool-exposed baselines when claiming tool-governance gains.
+
+## 5. Decision Autonomy For Routine Engineering
+
+User directive 2026-04-27: the engineer must not ask the user for routine experiment-launch or implementation-detail decisions. The engineer is expected to pick the optimal plan and execute it. Only critical decisions need to be escalated to the user.
+
+Routine decisions the engineer MUST handle without asking, when no paid API is required:
+
+- launching a no-paid local-vLLM diagnostic at any sample size already supported by an existing seed slice;
+- choosing between sample sizes (for example `n=50` vs `n=200`) when both are no-paid and clearly informational;
+- picking the next ablation row from `S-213 §5` or `R-PART-003 §6` to add config flags for;
+- picking which open-weight backbone to bring up next (Phi-4-mini, SmolLM3-3B, or other approved targets);
+- relocating a doc between `docs/<role>/results/` and `docs/<role>/handoffs/` to honor the cross-role reply protocol;
+- merging duplicate TODO rows when two roles legitimately track the same artefact;
+- writing additive code changes that do not reduce existing baseline performance.
+
+Critical decisions the engineer MUST escalate to the user:
+
+- spending paid API budget (any non-zero `estimated_cost_usd` outside parked quota);
+- changing the headline claim of the paper or the targeted set of datasets/baselines;
+- adding any new external dependency that touches paper-grade evidence (heavy framework imports, untrusted memory backends, untrusted retrieval indices);
+- any action that would invalidate or overwrite previously published artefacts;
+- any move that would cut already-completed work (deleting checkpoints, archiving handoffs, retracting reviews).
+
+When a routine decision is taken without escalation, the engineer must record the rationale in the relevant TODO row or result document (one paragraph is enough), so the decision is auditable.
