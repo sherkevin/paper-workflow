@@ -1,0 +1,2 @@
+# Keep byte-level manifest checks stable across platforms.
+* text=auto eol=lf
